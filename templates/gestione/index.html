@@ -10,10 +10,10 @@
 <div id="login">
     <H1>Login</H1>
     <form class = "login" method="post">
-        {% csrf_token %}
 
-        <input type="text" value="Username" /><br />
-        <input type="password" value="password" /><br />
+        {% csrf_token %}
+        <input type="text" name="user" value="Username" /><br />
+        <input type="password" name="password" value="password" /><br />
         <input type="submit" value="Accedi" />
 
     </form>
