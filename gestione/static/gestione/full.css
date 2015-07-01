@@ -1,1 +1,75 @@
-H1{color:red;}
+/* CSS RESET */
+
+body,div,dl,dt,dd,ul,ol,li,h1,pre,form,input,p,td{
+    margin: 0;
+    padding: 0;}
+
+table{
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+fieldset,img{
+    border: 0;
+}
+
+ul{
+    list-style: none;
+    list-style-position: outside;
+}
+
+a {
+    outline: none;
+}
+
+
+/* Essential */
+
+body{
+    background: #F9FCFC;
+    color: #666666;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 12px;
+}
+
+p{
+    line-height: 150%;
+}
+
+.wrapper{
+    width: 960px;
+    margin: 0 auto;
+}
+
+/* Header */
+header{
+    height: 110px;
+
+    background: #F4F8F9;
+}
+
+
+/* MAIN NAVIGATION */
+
+header ul{
+    float: right;
+    margin: 35px 0;
+}
+header li{
+    float: left;
+    display: inline-block;
+    width: 90px;
+    height: 36px;
+    margin: 0 10px 0 0;
+}
+
+header li a{
+    color: #2C6069;
+    display: block;
+    width: 90px;
+    height: 36px;
+    text-align: center;
+    font-weight: bold ;
+    line-height: 36px;
+    border: 1px solid #CDE0E4;
+}
