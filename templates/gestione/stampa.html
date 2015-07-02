@@ -1,0 +1,63 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="{% static 'gestione/full.css' %}">
+    <title></title>
+</head>
+<body>
+
+<header>
+    <div class="wrapper">
+        <h1 class="logo"><a href="/">Gestionale</a></h1>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/calcola">Calcola Orario</a></li>
+            <li class="active"><a href="/stampa">Stampa Orario</a> </li>
+            <li><a href="/admin">Admin</a></li>
+        </ul>
+    </div>
+</header>
+
+
+<div id="tabella_stampa">
+<h1>Stampa</h1>
+<table class="tg">
+  <tr>
+    <th class="tg-031e"></th>
+    <th class="tg-031e">Lunedì</th>
+    <th class="tg-031e">Martedì</th>
+    <th class="tg-031e">Mercoledì</th>
+    <th class="tg-031e">Giovedì</th>
+    <th class="tg-031e">Venerdì</th>
+    <th class="tg-031e">Sabato</th>
+    <th class="tg-031e">Domenica</th>
+  </tr>
+  <tr>
+    <td class="tg-031e">Giorno</td>
+    <td class="tg-vn4c">{{ test }}</td>
+    <td class="tg-031e"></td>
+    <td class="tg-vn4c"></td>
+    <td class="tg-031e"></td>
+    <td class="tg-vn4c"></td>
+    <td class="tg-031e"></td>
+    <td class="tg-vn4c"></td>
+  </tr>
+  <tr>
+    <td class="tg-031e">Notte</td>
+    <td class="tg-vn4c"></td>
+    <td class="tg-031e"></td>
+    <td class="tg-vn4c"></td>
+    <td class="tg-031e"></td>
+    <td class="tg-vn4c"></td>
+    <td class="tg-031e"></td>
+    <td class="tg-vn4c"></td>
+  </tr>
+</table>
+</div>
+
+
+
+</body>
+</html>

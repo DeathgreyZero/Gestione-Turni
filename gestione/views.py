@@ -1,16 +1,13 @@
-from django.shortcuts import render
+from django.shortcuts import render,render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
 
 def index(request):
     print 'Index'
-    if request.method == 'POST':
-        user = request.POST['user']
-        password = request.POST['password']
-        login(user,password)
-
     return render(request,'gestione/index.html')
 
 
 
-def login(user,password):
-    print "Username "+user+"Pass: "+password
+def stampa(request):
+    print 'Sto Stampando'
+    test = 'Mario'
+    return render(request,"gestione/stampa.html",{"test":test})
