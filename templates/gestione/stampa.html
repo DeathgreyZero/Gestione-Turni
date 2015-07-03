@@ -26,36 +26,28 @@
 <table class="tg">
   <tr>
     <th class="tg-031e"></th>
-    <th class="tg-031e">Lunedì</th>
-    <th class="tg-031e">Martedì</th>
-    <th class="tg-031e">Mercoledì</th>
-    <th class="tg-031e">Giovedì</th>
-    <th class="tg-031e">Venerdì</th>
-    <th class="tg-031e">Sabato</th>
-    <th class="tg-031e">Domenica</th>
+    <th class="tg-031e">Giorno ACC</th>
+    <th class="tg-031e">Notte ACC</th>
+    <th class="tg-031e">Giorno NEO</th>
+    <th class="tg-031e">Notte NEO</th>
+    <th class="tg-031e">Giorno REPARTO</th>
+    <th class="tg-031e">Notte REPARTO</th>
   </tr>
-  <tr>
-    <td class="tg-031e">Giorno</td>
-    <td class="tg-vn4c">{{ test }}</td>
-    <td class="tg-031e"></td>
-    <td class="tg-vn4c"></td>
-    <td class="tg-031e"></td>
-    <td class="tg-vn4c"></td>
-    <td class="tg-031e"></td>
-    <td class="tg-vn4c"></td>
-  </tr>
-  <tr>
-    <td class="tg-031e">Notte</td>
-    <td class="tg-vn4c"></td>
-    <td class="tg-031e"></td>
-    <td class="tg-vn4c"></td>
-    <td class="tg-031e"></td>
-    <td class="tg-vn4c"></td>
-    <td class="tg-031e"></td>
-    <td class="tg-vn4c"></td>
-  </tr>
+    {% for i in tupla4 %}
+    <tr>
+        <td>{{ forloop.counter }} {{ i }}</td>
+        <td class="tg-vn4c">{{ array_persona }}</td>
+        <td class="tg-031e"></td>
+        <td class="tg-vn4c"></td>
+        <td class="tg-031e"></td>
+        <td class="tg-vn4c"></td>
+        <td class="tg-031e"></td>
+    </tr>
+    {% endfor %}
+
 </table>
 </div>
+
 
 
 
