@@ -23,30 +23,10 @@
 
 <div id="tabella_stampa">
 <h1>Stampa</h1>
-<table class="tg">
-  <tr>
-    <th class="tg-031e"></th>
-    <th class="tg-031e">Giorno ACC</th>
-    <th class="tg-031e">Notte ACC</th>
-    <th class="tg-031e">Giorno NEO</th>
-    <th class="tg-031e">Notte NEO</th>
-    <th class="tg-031e">Giorno REPARTO</th>
-    <th class="tg-031e">Notte REPARTO</th>
-  </tr>
-    {% for i in tupla4 %}
-    <tr>
-        <td>{{ forloop.counter }} {{ i }}</td>
-        <td class="tg-vn4c">{{ array_persona }}</td>
-        <td class="tg-031e"></td>
-        <td class="tg-vn4c"></td>
-        <td class="tg-031e"></td>
-        <td class="tg-vn4c"></td>
-        <td class="tg-031e"></td>
-    </tr>
-    {% endfor %}
-
+    {% autoescape off %}{{ HTML }}{% endautoescape %}
 </table>
 </div>
+
 
 
 
