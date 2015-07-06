@@ -7,6 +7,6 @@ nome = []
 for course in a.fetchall():
     nome.append("{0}".format(course[0]))
 
-print nome
+#print nome
 
 c.close()
