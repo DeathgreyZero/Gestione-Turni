@@ -8,9 +8,7 @@ def index(request):
 
 
 def stampa(request):
-    tupla3 = generate_html.tupla3
-    tupla4 = generate_html.tupla4
     HTML = generate_html.table
    # print array_persona.nome
 
-    return render(request,"gestione/stampa.html",{"tupla3":tupla3,"tupla4":tupla4,"array_persona":array_persona.nome,"HTML":HTML})
+    return render(request,"gestione/stampa.html",{"HTML":HTML})

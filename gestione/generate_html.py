@@ -1,5 +1,5 @@
 import calendar
-import array_persona
+from array_persona import *
 import numpy
 
 
@@ -8,7 +8,7 @@ def cordinate(row, col):
 
 cal = calendar.Calendar()
 year = 2015
-month = 9
+month = 8
 calendario = cal.itermonthdays(year, month)
 day = ['Lunedi', 'Martedi', 'Mercoledi', 'Giovedi', 'Venerdi', 'Sabato', 'Domenica']
 cont = 0
@@ -52,13 +52,29 @@ mat[:] = ' '
 # print mat
 
 
-def calcola_turno(reparto):
+def calcola_turno(reparto,j):
     nome = ''
-    if reparto == 1:
-        nome = 'Giovanni'
-    if reparto == 3:
-        nome = 'Luca'
-    return nome
+    print j
+    print range(j,len(persone))
+    for i in xrange(j,len(persone)):
+        p = Persona.objects.get(pk = persone[i].matricola)
+        print p.matricola
+        if reparto == 1:
+            if p.ultimo_turno == 0:
+                p.ultimo_turno = 1
+                p.save()
+                print i
+                return [persone[i].nome,i+1]
+            if p.ultimo_turno == 1:
+                print i
+                return [persone[i].nome,i+1]
+        if reparto == 2:
+            if p.ultimo_turno == 0 or p.ultimo_turno%2 != 0:
+                p.ultimo_turno = 2
+                p.save()
+                print i
+                return [persone[i].nome,i+1]
+    return [nome,i]
 
 #1.Giorno Accettazione
 #2.Notte Accettazione
@@ -68,11 +84,12 @@ def calcola_turno(reparto):
 #6.Notte Reparto
 
 counter = 1
+i = 0
 for days in tupla4:
     mat.put(cordinate(counter-1, 0),str(counter)+' '+str(days))
     table = table + '<td class = "tg-031e">'+mat[counter-1][0]+'</td>'
     for reparto in range(1,7):
-        turno = calcola_turno(reparto)
+        [turno,i] = calcola_turno(reparto,i)
         table = table+'<td class="tg-vn4c">' + turno + '</td>'
         mat.put(cordinate(counter-1,reparto),turno)
 
