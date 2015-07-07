@@ -59,11 +59,13 @@ mat[:] = ' '
 #6.Notte Reparto
 
 numero_turni = 0
-nome = ''
+ultimo_turno = 0
 def calcola_turno(reparto):
-    global nome
+    nome = ''
+    global ultimo_turno
     #ogni giorno diminuisce di 1 i contatori del riposo e del giorno
-    if numero_turni%6 == 0:
+    #DA MODIFICARE IN MANIERA TALE CHE QUANDO TUTTI HANNO FATTO UN TURNO RESETTA IL CAMPO COUNT_GIORNO
+    """if numero_turni%6 == 0:
         for count in xrange(1,len(persone)+1):
             r = Persona.objects.get(pk = persone[count-1].matricola)
             if r.count_giorno > 0:
@@ -71,31 +73,33 @@ def calcola_turno(reparto):
                 r.save()
             elif r.riposo > 0:
                 r.riposo -=1
-                r.save()
+                r.save()"""
 
     for count in xrange(1,len(persone)+1):
         p = Persona.objects.get(pk = persone[count-1].matricola)
         print 'calcolo > '+str(count)+' prendo: '+p.nome
-        if p.riposo < 1 and p.count_giorno == 0:
+        if p.riposo < 1 and p.count_giorno <= 1:
             if reparto == 1:
-                if p.ultimo_turno >= 0:
-                    p.ultimo_turno = 1
+                if p.count_giorno == 0:
+                    nome = p.nome
                     p.count_giorno = 1
+                    p.ultimo_turno = 1
                     p.save()
-                    nome = persone[count-1].nome
-                else:
-                    nome = ''
+                    print 'idoneo, salvo '+p.nome
+                    return nome
+                print 'non idoneo'
                 print '1'
-            if reparto == 2:
+            elif reparto == 2:
                 nome = '2'
-            if reparto == 3:
+            elif reparto == 3:
                 nome = '3'
-            if reparto == 4:
+            elif reparto == 4:
                 nome = '4'
-            if reparto == 5:
+            elif reparto == 5:
                 nome = '5'
-            if reparto == 6:
+            elif reparto == 6:
                 nome = '6'
+
         elif p.count_giorno > 0:
             continue
     return nome
