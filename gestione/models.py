@@ -7,6 +7,7 @@ class Persona(models.Model):
     anno_freq = models.IntegerField()
     ultimo_turno = models.IntegerField()
     riposo = models.IntegerField()
+    count_giorno = models.IntegerField()
     def __unicode__(self):
         return self.cognome+' '+self.nome+' Mat. '+self.matricola
 

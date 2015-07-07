@@ -48,33 +48,8 @@ table = """<table class="tg">
 mat = numpy.chararray((len(tupla3), 7))
 mat = numpy.chararray(mat.shape, itemsize='40')
 mat[:] = ' '
-#mat.put(cordinate(1, 6), 'ciao')
-# print mat
 
 
-def calcola_turno(reparto,j):
-    nome = ''
-    print j
-    print range(j,len(persone))
-    for i in xrange(j,len(persone)):
-        p = Persona.objects.get(pk = persone[i].matricola)
-        print p.matricola
-        if reparto == 1:
-            if p.ultimo_turno == 0:
-                p.ultimo_turno = 1
-                p.save()
-                print i
-                return [persone[i].nome,i+1]
-            if p.ultimo_turno == 1:
-                print i
-                return [persone[i].nome,i+1]
-        if reparto == 2:
-            if p.ultimo_turno == 0 or p.ultimo_turno%2 != 0:
-                p.ultimo_turno = 2
-                p.save()
-                print i
-                return [persone[i].nome,i+1]
-    return [nome,i]
 
 #1.Giorno Accettazione
 #2.Notte Accettazione
@@ -83,20 +58,62 @@ def calcola_turno(reparto,j):
 #5.Giorno Reparto
 #6.Notte Reparto
 
+numero_turni = 0
+nome = ''
+def calcola_turno(reparto):
+    global nome
+    #ogni giorno diminuisce di 1 i contatori del riposo e del giorno
+    if numero_turni%6 == 0:
+        for count in xrange(1,len(persone)+1):
+            r = Persona.objects.get(pk = persone[count-1].matricola)
+            if r.count_giorno > 0:
+                r.count_giorno -=1
+                r.save()
+            elif r.riposo > 0:
+                r.riposo -=1
+                r.save()
+
+    for count in xrange(1,len(persone)+1):
+        p = Persona.objects.get(pk = persone[count-1].matricola)
+        print 'calcolo > '+str(count)+' prendo: '+p.nome
+        if p.riposo < 1 and p.count_giorno == 0:
+            if reparto == 1:
+                if p.ultimo_turno >= 0:
+                    p.ultimo_turno = 1
+                    p.count_giorno = 1
+                    p.save()
+                    nome = persone[count-1].nome
+                else:
+                    nome = ''
+                print '1'
+            if reparto == 2:
+                nome = '2'
+            if reparto == 3:
+                nome = '3'
+            if reparto == 4:
+                nome = '4'
+            if reparto == 5:
+                nome = '5'
+            if reparto == 6:
+                nome = '6'
+        elif p.count_giorno > 0:
+            continue
+    return nome
+
+
+
+
+
 counter = 1
-i = 0
+
 for days in tupla4:
     mat.put(cordinate(counter-1, 0),str(counter)+' '+str(days))
     table = table + '<td class = "tg-031e">'+mat[counter-1][0]+'</td>'
     for reparto in range(1,7):
-        [turno,i] = calcola_turno(reparto,i)
+        turno = calcola_turno(reparto)
         table = table+'<td class="tg-vn4c">' + turno + '</td>'
         mat.put(cordinate(counter-1,reparto),turno)
-
-    #table = table + '<td class="tg-031e">' + str(counter) + " " + str(days) + '</td>'
-    #for i in array_persona.nome:
-    #    table = table + '<td class="tg-vn4c">' + i + '</td>'
     table = table + "</tr>"
     counter += 1
 
-print mat
+#print mat
