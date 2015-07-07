@@ -4,6 +4,6 @@ from .models import Persona
 
 
 class PersonaAdmin(admin.ModelAdmin):
-    exclude = ['ultimo_turno','riposo']
+    exclude = ['numero_notti','turni_effettuati','indice_preso','indice_notte']
 
 admin.site.register(Persona,PersonaAdmin)

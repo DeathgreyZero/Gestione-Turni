@@ -58,63 +58,69 @@ mat[:] = ' '
 #5.Giorno Reparto
 #6.Notte Reparto
 
-numero_turni = 0
-ultimo_turno = 0
-def calcola_turno(reparto):
-    nome = ''
-    global ultimo_turno
-    #ogni giorno diminuisce di 1 i contatori del riposo e del giorno
-    print str(numero_turni)+'<<<<turni'
-    if numero_turni%6 == 0:
-        print ">>>>>>>>>>>>>>>>SCALO I RIPOSI<<<<<<<<<<<<<<<<<<<"
-        query = Persona.objects.filter(count_giorno = 0)
-        for count in xrange(1,len(persone)+1):
-            r = Persona.objects.get(pk = persone[count-1].matricola)
-            if r.count_giorno > 0 and not query:
-                r.count_giorno -=1
-                r.save()
-            elif r.riposo <= 3 and r.riposo > 0:
-                r.riposo -=1
-                r.save()
-            elif r.riposo == 0:
-                r.ultimo_turno = 1
-                r.count_giorno = 0
-                r.save()
 
+def calcola_turno(reparto,days):
+    nome = ''
+    print days
     for count in xrange(1,len(persone)+1):
         p = Persona.objects.get(pk = persone[count-1].matricola)
-        print 'calcolo -> '+str(count)+' prendo: '+p.nome
-        if p.riposo == 0:
-            if reparto == 1:
-                if p.count_giorno <= 1 and p.ultimo_turno%2 == 0:
-                    nome = p.nome
-                    p.count_giorno = 1
-                    p.riposo = 1
-                    p.ultimo_turno = 1
-                    p.save()
-                    print 'idoneo, salvo '+p.nome
-                    return nome
-                print 'non idoneo'
-                print '1'
-            elif reparto == 2:
-                if p.count_giorno <= 1:
-                    nome = p.nome
-                    p.riposo = 3
-                    p.ultimo_turno = 2
-                    p.count_giorno = 0
-                    p.save()
-                    print 'idoneo, salvo '+p.nome
-                    return nome
-                print 'non idoneo'
-                print '2'
-            elif reparto == 3:
-                nome = '3'
-            elif reparto == 4:
-                nome = '4'
-            elif reparto == 5:
-                nome = '5'
-            elif reparto == 6:
-                nome = '6'
+        print 'Seleziono -> : '+p.nome
+        if (((days == 'Sabato' or days == 'Domenica') or reparto%2 == 0) and p.indice_preso == 0) and p.indice_notte <= 1:
+            if reparto ==  1 and p.anno_freq <= 2:
+                p.turni_effettuati +=1
+                p.indice_preso = 1
+                p.save()
+                print 'Idoneo, prendo '+p.nome
+                return p.nome
+            if reparto == 2 and p.indice_notte == 0:
+                print 'indice notti : '+str(p.indice_notte)
+                p.numero_notti +=1
+                p.turni_effettuati +=1
+                p.indice_preso = 1
+                p.indice_notte = 3
+                p.save()
+                print 'Idoneo, prendo '+p.nome
+                return p.nome
+            if reparto == 3 and p.anno_freq >=3:
+                p.turni_effettuati+=1
+                p.indice_preso = 1
+                p.save()
+                print 'Idoneo, prendo '+p.nome
+                return p.nome
+            if (reparto == 4 and p.abilitazione_neo == 1) and p.indice_notte == 0:
+                print 'indice notti : '+str(p.indice_notte)
+                p.numero_notti +=1
+                p.turni_effettuati +=1
+                p.indice_preso = 1
+                p.indice_notte = 3
+                p.save()
+                print 'Idoneo, prendo '+p.nome
+                return p.nome
+            if reparto == 5:
+                p.turni_effettuati+=1
+                p.indice_preso = 1
+                p.save()
+                print 'Idoneo, prendo '+p.nome
+                return p.nome
+            if (reparto == 6 and p.anno_freq >= 4) and p.indice_notte == 0:
+                print 'indice notti : '+str(p.indice_notte)
+                p.numero_notti +=1
+                p.turni_effettuati +=1
+                p.indice_preso = 1
+                p.indice_notte = 3
+                p.save()
+                print 'Idoneo, prendo '+p.nome
+                return p.nome
+            print p.nome+' NON E IDONEO'
+        print 'NESSUNO E IDONEO'
+        if p.indice_preso > 0 and reparto == 1:
+            p.indice_preso = 0
+            p.save()
+        #indice_notte deve essere decrementato dopo che passa un giorno
+        if p.indice_notte > 0 and reparto == 1:
+            p.indice_notte -=1
+            p.save()
+        continue
     return nome
 
 
@@ -129,10 +135,9 @@ for days in tupla4:
     print '>>>>>>>>>>>>>>GIORNO '+str(counter)+'<<<<<<<<<<<<<<<<<<<<<'
     for reparto in range(1,7):
         print '>>>>>>>>>>>>> REPARTO: '+str(reparto)+'<<<<<<<<<<<<<<<<'
-        turno = calcola_turno(reparto)
+        turno = calcola_turno(reparto,days)
         table = table+'<td class="tg-vn4c">' + turno + '</td>'
         mat.put(cordinate(counter-1,reparto),turno)
-        numero_turni +=1
     table = table + "</tr>"
     counter += 1
 
