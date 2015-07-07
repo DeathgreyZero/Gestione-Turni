@@ -64,16 +64,17 @@ def calcola_turno(reparto):
     nome = ''
     global ultimo_turno
     #ogni giorno diminuisce di 1 i contatori del riposo e del giorno
-    #DA MODIFICARE IN MANIERA TALE CHE QUANDO TUTTI HANNO FATTO UN TURNO RESETTA IL CAMPO COUNT_GIORNO
-    """if numero_turni%6 == 0:
+
+    if numero_turni%6 == 0:
+        query = Persona.objects.filter(count_giorno = 0)
         for count in xrange(1,len(persone)+1):
             r = Persona.objects.get(pk = persone[count-1].matricola)
-            if r.count_giorno > 0:
+            if r.count_giorno > 0 and not query:
                 r.count_giorno -=1
                 r.save()
             elif r.riposo > 0:
                 r.riposo -=1
-                r.save()"""
+                r.save()
 
     for count in xrange(1,len(persone)+1):
         p = Persona.objects.get(pk = persone[count-1].matricola)
