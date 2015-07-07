@@ -78,6 +78,7 @@ def calcola_turno(reparto):
                 r.save()
             elif r.riposo == 0:
                 r.ultimo_turno = 1
+                r.count_giorno = 0
                 r.save()
 
     for count in xrange(1,len(persone)+1):
@@ -100,6 +101,7 @@ def calcola_turno(reparto):
                     nome = p.nome
                     p.riposo = 3
                     p.ultimo_turno = 2
+                    p.count_giorno = 0
                     p.save()
                     print 'idoneo, salvo '+p.nome
                     return nome
