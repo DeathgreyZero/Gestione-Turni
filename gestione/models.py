@@ -11,6 +11,8 @@ class Persona(models.Model):
     indice_preso = models.IntegerField(default=0)
     abilitazione_neo = models.IntegerField(default=0)
     indice_notte = models.IntegerField(default=0)
+    nomi_notti_effettuate = models.CharField(max_length=500,default=' ')
+    martedi_notte = models.IntegerField(default=0)
     def __unicode__(self):
         return self.cognome+' '+self.nome+' Mat. '+self.matricola
 
