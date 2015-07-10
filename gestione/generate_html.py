@@ -7,12 +7,16 @@ def cordinate(row, col):
     return (row + col) + (row * 6)
 
 lista_notti_effettuate = []
-#notti = 'Lunedi,Martedi,'
-def get_notti(notti):
+lista_desiderati_x = []
+lista_desiderati_g = []
+lista_desiderati_n = []
+
+
+def get_liste(stringa,lista):
     j = 0
-    for i in range(0,len(notti)):
-        if notti[i] == ',':
-            lista_notti_effettuate.append(notti[j:i])
+    for i in range(0,len(stringa)):
+        if stringa[i] == ',':
+            lista.append(stringa[j:i])
             j = i+1
 
 
@@ -62,7 +66,7 @@ table = """<table class="tg">
   </tr>
   <tr>
 """
-
+#Inizializzo la matrice
 mat = numpy.chararray((len(tupla3), 7))
 mat = numpy.chararray(mat.shape, itemsize='40')
 mat[:] = ' '
@@ -84,10 +88,15 @@ def calcola_turno(reparto,days,n_days):
     for count in xrange(1,len(persone)+1):
         p = Persona.objects.get(pk = persone[count-1].matricola)
         print 'Seleziono -> : '+p.nome
-        get_notti(p.nomi_notti_effettuate)
+        get_liste(p.nomi_notti_effettuate,lista_notti_effettuate)
+        get_liste(p.desiderati_x,lista_desiderati_x)
+        get_liste(p.desiderati_g,lista_desiderati_g)
+        get_liste(p.desiderati_n,lista_desiderati_n)
         print ">>>>>>>>>>>>> FUNZIONE GET_NOTTI<<<<<<<<<<<"
         print lista_notti_effettuate
-        if (((((((days == 'Sabato' or days == 'Domenica' or n_days in festivi) or reparto%2 == 0) and p.indice_preso == 0) and p.indice_notte <= 1)and p.maternita == 0)) and ((p.turni_effettuati < 4 and (p.anno_freq > 3 or p.max_turni_mese_prec == 1))or(p.turni_effettuati<5 and (p.anno_freq < 4 and p.max_turni_mese_prec == 0)))):
+        print ">>>>>>>>>>>>> GET_LISTA_DESIDERATI_X<<<<<<<<<<<<<<<<"
+        print lista_desiderati_x
+        if (((((((days == 'Sabato' or days == 'Domenica' or n_days in festivi ) or reparto%2 == 0) and p.indice_preso == 0) and p.indice_notte <= 1)and p.maternita == 0)) and ((p.turni_effettuati < 4 and (p.anno_freq > 3 or p.max_turni_mese_prec == 1))or(p.turni_effettuati<5 and (p.anno_freq < 4 and p.max_turni_mese_prec == 0))) and n_days not in lista_desiderati_x):
             if reparto ==  1 and p.anno_freq <= 2:
                 p.turni_effettuati +=1
                 if p.turni_effettuati == 5:

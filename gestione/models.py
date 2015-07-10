@@ -14,6 +14,9 @@ class Persona(models.Model):
     nomi_notti_effettuate = models.CharField(max_length=500,default=' ')
     martedi_notte = models.IntegerField(default=0)
     max_turni_mese_prec = models.IntegerField(default=0)
+    desiderati_x = models.CharField(default=' ',max_length=500)
+    desiderati_g = models.CharField(default=' ',max_length=500)
+    desiderati_n = models.CharField(default=' ',max_length=500)
     def __unicode__(self):
         return self.cognome+' '+self.nome+' Mat. '+self.matricola
 

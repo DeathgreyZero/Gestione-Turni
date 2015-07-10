@@ -11,6 +11,7 @@ for course in a.fetchall():
                            numero_notti = "{0}".format(course[5],turni_effettuati = "{0}".format(course[6]),
                            indice_preso = "{0}".format(course[7]),abilitazione_neo = "{0}".format(course[8]),
                            indice_notte = "{0}".format(course[9]),nomi_notti_effettuate = "{0}".format(course[10]),
-                           martedi_notte = "{0}".format(course[11]),max_turni_mese_prec = "{0}".format(course[11]))))
+                           martedi_notte = "{0}".format(course[11]),max_turni_mese_prec = "{0}".format(course[11]),
+                           desiderati_x = "{0}".format(course[12]),desiderati_g = "{0}".format(course[13]),desiderati_n = "{0}".format(course[14]))))
 
 c.close()
