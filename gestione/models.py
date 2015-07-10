@@ -13,6 +13,7 @@ class Persona(models.Model):
     indice_notte = models.IntegerField(default=0)
     nomi_notti_effettuate = models.CharField(max_length=500,default=' ')
     martedi_notte = models.IntegerField(default=0)
+    max_turni_mese_prec = models.IntegerField(default=0)
     def __unicode__(self):
         return self.cognome+' '+self.nome+' Mat. '+self.matricola
 

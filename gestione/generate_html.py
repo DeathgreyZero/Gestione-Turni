@@ -7,7 +7,7 @@ def cordinate(row, col):
     return (row + col) + (row * 6)
 
 lista_notti_effettuate = []
-notti = 'Lunedi,Martedi,'
+#notti = 'Lunedi,Martedi,'
 def get_notti(notti):
     j = 0
     for i in range(0,len(notti)):
@@ -87,9 +87,11 @@ def calcola_turno(reparto,days,n_days):
         get_notti(p.nomi_notti_effettuate)
         print ">>>>>>>>>>>>> FUNZIONE GET_NOTTI<<<<<<<<<<<"
         print lista_notti_effettuate
-        if (((((days == 'Sabato' or days == 'Domenica' or n_days in festivi) or reparto%2 == 0) and p.indice_preso == 0) and p.indice_notte <= 1)and p.maternita == 0):
+        if (((((((days == 'Sabato' or days == 'Domenica' or n_days in festivi) or reparto%2 == 0) and p.indice_preso == 0) and p.indice_notte <= 1)and p.maternita == 0)) and ((p.turni_effettuati < 4 and (p.anno_freq > 3 or p.max_turni_mese_prec == 1))or(p.turni_effettuati<5 and (p.anno_freq < 4 and p.max_turni_mese_prec == 0)))):
             if reparto ==  1 and p.anno_freq <= 2:
                 p.turni_effettuati +=1
+                if p.turni_effettuati == 5:
+                    p.max_turni_mese_prec = 1
                 p.indice_preso = 1
                 p.save()
                 print 'Idoneo, prendo '+p.nome
@@ -102,6 +104,8 @@ def calcola_turno(reparto,days,n_days):
                 p.nomi_notti_effettuate = temp
                 p.numero_notti +=1
                 p.turni_effettuati +=1
+                if p.turni_effettuati == 5:
+                    p.max_turni_mese_prec = 1
                 p.indice_preso = 1
                 p.indice_notte = 3
                 p.save()
@@ -109,6 +113,8 @@ def calcola_turno(reparto,days,n_days):
                 return p.nome
             if reparto == 3 and p.anno_freq >=3:
                 p.turni_effettuati+=1
+                if p.turni_effettuati == 5:
+                    p.max_turni_mese_prec = 1
                 p.indice_preso = 1
                 p.save()
                 print 'Idoneo, prendo '+p.nome
@@ -121,6 +127,8 @@ def calcola_turno(reparto,days,n_days):
                 p.nomi_notti_effettuate = temp
                 p.numero_notti +=1
                 p.turni_effettuati +=1
+                if p.turni_effettuati == 5:
+                    p.max_turni_mese_prec = 1
                 p.indice_preso = 1
                 p.indice_notte = 3
                 p.save()
@@ -128,6 +136,8 @@ def calcola_turno(reparto,days,n_days):
                 return p.nome
             if reparto == 5:
                 p.turni_effettuati+=1
+                if p.turni_effettuati == 5:
+                    p.max_turni_mese_prec = 1
                 p.indice_preso = 1
                 p.save()
                 print 'Idoneo, prendo '+p.nome
@@ -140,6 +150,8 @@ def calcola_turno(reparto,days,n_days):
                 p.nomi_notti_effettuate = temp
                 p.numero_notti +=1
                 p.turni_effettuati +=1
+                if p.turni_effettuati == 5:
+                    p.max_turni_mese_prec = 1
                 p.indice_preso = 1
                 p.indice_notte = 3
                 p.save()
