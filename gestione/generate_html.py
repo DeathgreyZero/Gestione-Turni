@@ -8,7 +8,7 @@ def cordinate(row, col):
 
 lista_notti_effettuate = []
 
-
+#funzione che ritorna le liste
 def get_liste(stringa,lista):
     j = 0
     for i in range(0,len(stringa)):
@@ -22,7 +22,7 @@ cal = calendar.Calendar()
 year = 2015
 month = 12
 festivi = []
-
+#Da implementare i festivi
 if month == 12:
     festivi = [25,26]
 if month == 1:
