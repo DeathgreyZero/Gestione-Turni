@@ -1,7 +1,8 @@
 import calendar
+import datetime
 from array_persona import *
 import numpy
-
+import xlwt
 
 def cordinate(row, col):
     return (row + col) + (row * 6)
@@ -19,14 +20,26 @@ def get_liste(stringa,lista):
 
 
 cal = calendar.Calendar()
-year = 2015
-month = 12
+year  = datetime.date.today().year
+month = datetime.date.today().month
+
 festivi = []
-#Da implementare i festivi
-if month == 12:
-    festivi = [25,26]
 if month == 1:
-    festivi = [1,6]
+    festivi = [1, 6]
+if month == 2:
+    festivi = [17]
+if month == 4:
+    festivi = [25]
+if month == 5:
+    festivi = [1]
+if month == 6:
+    festivi = [2]
+if month == 8:
+    festivi = [15]
+if month == 11:
+    festivi = [1]
+if month == 12:
+    festivi = [8, 25, 26]
 
 calendario = cal.itermonthdays(year, month)
 day = ['Lunedi', 'Martedi', 'Mercoledi', 'Giovedi', 'Venerdi', 'Sabato', 'Domenica']
@@ -89,7 +102,7 @@ def calcola_turno(reparto,days,n_days):
         print ">>>>>>>>>>>>> FUNZIONE GET_NOTTI<<<<<<<<<<<"
         print lista_notti_effettuate
         if ((((((((days == 'Sabato' or days == 'Domenica' or (n_days in festivi ))) or reparto%2 == 0) and p.indice_preso == 0) and p.indice_notte <= 1)and p.maternita == 0)) and ((p.turni_effettuati < 4 and (p.anno_freq > 3 or p.max_turni_mese_prec == 1))or(p.turni_effettuati<5 and (p.anno_freq < 4 and p.max_turni_mese_prec == 0)))) and (str(n_days) not in p.desiderati_x):
-            if reparto ==  1 and (p.anno_freq <= 2 and str(n_days) not in p.desiderati_g):
+            if reparto == 1 and (p.anno_freq <= 2 and str(n_days) not in p.desiderati_g):
                 p.turni_effettuati +=1
                 if p.turni_effettuati == 5:
                     p.max_turni_mese_prec = 1
@@ -186,3 +199,20 @@ for days in tupla4:
     counter += 1
 
 #print mat
+
+wbook = xlwt.Workbook()
+sheet = wbook.add_sheet('my_sheet')
+
+sheet.write(0, 0, mese)
+sheet.write(0, 1, 'Giorno ACC')
+sheet.write(0, 2, 'Notte ACC')
+sheet.write(0, 3, 'Giorno NEO')
+sheet.write(0, 4, 'Notte NEO')
+sheet.write(0, 5, 'Giorno REPARTO')
+sheet.write(0, 6, 'Notte REPARTO')
+
+for i in range(0, mat.shape[0]):
+    for j in range(0, mat.shape[1]):
+        sheet.write(i+1, j, mat[i, j])
+
+wbook.save('orario_'+str(mese).replace("/", "_")+'.xls')
