@@ -17,8 +17,11 @@ class Persona(models.Model):
     desiderati_x = models.CharField(default=' ', max_length=500)
     desiderati_g = models.CharField(default=' ', max_length=500)
     desiderati_n = models.CharField(default=' ', max_length=500)
+    disponibile = models.IntegerField(default=1)
+
     def __unicode__(self):
         return self.cognome+' '+self.nome+' Mat. '+self.matricola
+
 
 
 
