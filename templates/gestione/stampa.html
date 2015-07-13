@@ -10,7 +10,7 @@
 
 <header>
     <div class="wrapper">
-        <h1 class="logo"><a href="/">Gestionale</a></h1>
+        <h1 class="logo"><a href="/">Manage Your Job</a></h1>
         <ul>
             <li><a href="/">Home</a></li>
             <li class="active"><a href="/stampa">Turni</a></li>
@@ -21,6 +21,10 @@
 
 
 <div id="tabella_stampa">
+<form action="#" method="post">{% csrf_token %}
+    <input type="submit" value="Genera Turni" name="gen_turni">
+    <input type="submit" value="Salva in XLS" name="salva_xls">
+</form>
 <h1>Stampa</h1>
     {% autoescape off %}{{ HTML }}{% endautoescape %}
 </table>

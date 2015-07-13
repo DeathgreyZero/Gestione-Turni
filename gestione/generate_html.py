@@ -186,7 +186,7 @@ def calcola_turno(reparto,days,n_days):
 
 
 
-counter = 1
+
 table = """<table class="tg">
   <tr>
     <th class="tg-031e">""" + mese + """</th>
@@ -199,34 +199,37 @@ table = """<table class="tg">
   </tr>
   <tr>
 """
-for days in tupla4:
-    mat.put(cordinate(counter-1, 0),str(counter)+' '+str(days))
-    table = table + '<td class = "tg-031e">'+mat[counter-1][0]+'</td>'
-    #print '>>>>>>>>>>>>>>GIORNO '+str(counter)+'<<<<<<<<<<<<<<<<<<<<<'
-    for reparto in range(1,7):
-        #print '>>>>>>>>>>>>> REPARTO: '+str(reparto)+'<<<<<<<<<<<<<<<<'
-        turno = calcola_turno(reparto,days,counter)
-        table = table+'<td class="tg-vn4c">' + turno + '</td>'
-        mat.put(cordinate(counter-1,reparto),turno)
-    table = table + "</tr>"
-    counter += 1
+def gen_turno():
+    counter = 1
+    global table
+    for days in tupla4:
+        mat.put(cordinate(counter-1, 0),str(counter)+' '+str(days))
+        table = table + '<td class = "tg-031e">'+mat[counter-1][0]+'</td>'
+        #print '>>>>>>>>>>>>>>GIORNO '+str(counter)+'<<<<<<<<<<<<<<<<<<<<<'
+        for reparto in range(1,7):
+            #print '>>>>>>>>>>>>> REPARTO: '+str(reparto)+'<<<<<<<<<<<<<<<<'
+            turno = calcola_turno(reparto,days,counter)
+            table = table+'<td class="tg-vn4c">' + turno + '</td>'
+            mat.put(cordinate(counter-1,reparto),turno)
+        table = table + "</tr>"
+        counter += 1
 
 #print mat
 
+def save_xls(response):
+    wbook = xlwt.Workbook()
+    sheet = wbook.add_sheet('my_sheet')
 
-wbook = xlwt.Workbook()
-sheet = wbook.add_sheet('my_sheet')
+    sheet.write(0, 0, mese)
+    sheet.write(0, 1, 'Giorno ACC')
+    sheet.write(0, 2, 'Notte ACC')
+    sheet.write(0, 3, 'Giorno NEO')
+    sheet.write(0, 4, 'Notte NEO')
+    sheet.write(0, 5, 'Giorno REPARTO')
+    sheet.write(0, 6, 'Notte REPARTO')
 
-sheet.write(0, 0, mese)
-sheet.write(0, 1, 'Giorno ACC')
-sheet.write(0, 2, 'Notte ACC')
-sheet.write(0, 3, 'Giorno NEO')
-sheet.write(0, 4, 'Notte NEO')
-sheet.write(0, 5, 'Giorno REPARTO')
-sheet.write(0, 6, 'Notte REPARTO')
+    for i in range(0, mat.shape[0]):
+        for j in range(0, mat.shape[1]):
+            sheet.write(i+1, j, mat[i, j])
 
-for i in range(0, mat.shape[0]):
-    for j in range(0, mat.shape[1]):
-        sheet.write(i+1, j, mat[i, j])
-
-wbook.save('orario_'+str(mese).replace("/", "_")+'.xls')
+    return wbook.save(response)

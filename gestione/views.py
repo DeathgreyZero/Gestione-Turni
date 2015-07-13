@@ -1,8 +1,9 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render,HttpResponseRedirect,render_to_response
+from django.shortcuts import render,HttpResponseRedirect
 from django.contrib.auth import logout,authenticate,login
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib import auth
+from django.http import HttpResponse
 import generate_html
 
 
@@ -27,8 +28,18 @@ def index(request):
 
 @user_passes_test(lambda u: u.is_superuser)
 def stampa(request):
-    generate_html.reset()
-    HTML = generate_html.table
+    if(request.POST.get('gen_turni')):
+        generate_html.reset()
+        generate_html.gen_turno()
+        HTML = generate_html.table
+        return render(request,"gestione/stampa.html",{"HTML":HTML})
+    else:
+        HTML = generate_html.table
+    if(request.POST.get('salva_xls')):
+        response = HttpResponse(content_type='application/vnd.ms-excel')
+        response['Content-Disposition'] = 'attachment; filename=turni.xls'
+        generate_html.save_xls(response)
+        return response
     return render(request,"gestione/stampa.html",{"HTML":HTML})
 
 @login_required

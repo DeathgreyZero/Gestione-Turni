@@ -17,10 +17,10 @@ class Persona(models.Model):
     desiderati_x = models.CharField(default=' ', max_length=500,verbose_name='Giorni Desiderati Completi',help_text='Inserire i giorni desiderati seguiti da una virgola, ES.(24,25)')
     desiderati_g = models.CharField(default=' ', max_length=500,help_text='Inserire i giorni desiderati seguiti da una virgola, ES.(24,25)')
     desiderati_n = models.CharField(default=' ', max_length=500,help_text='Inserire i giorni desiderati seguiti da una virgola, ES.(24,25)')
-    disponibile = models.IntegerField(default=1)
+    disponibile = models.IntegerField(default=1,help_text='1 se lo specializzando e\' disponibile 0 altrimenti')
 
     def __unicode__(self):
-        return self.cognome+' '+self.nome+' Mat. '+self.matricola
+        return self.cognome+' '+self.nome+' CF. '+self.matricola
 
 
 
