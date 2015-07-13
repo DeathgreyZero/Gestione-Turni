@@ -18,6 +18,15 @@ def get_liste(stringa,lista):
             j = i+1
 
 
+def reset():
+        for count in xrange(1,len(persone)+1):
+            pers = Persona.objects.get(pk = persone[count-1].matricola)
+            pers.turni_effettuati = 0
+            pers.nomi_notti_effettuate = ' '
+            pers.martedi_notte = 0
+            pers.numero_notti = 0
+            pers.save()
+
 
 cal = calendar.Calendar()
 year  = datetime.date.today().year
@@ -199,6 +208,7 @@ for days in tupla4:
     counter += 1
 
 #print mat
+
 
 wbook = xlwt.Workbook()
 sheet = wbook.add_sheet('my_sheet')
