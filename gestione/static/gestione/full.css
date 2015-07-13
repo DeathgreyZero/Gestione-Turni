@@ -86,3 +86,13 @@ header li a{
     position: absolute;
     left: 20%;
 }
+
+
+/* LOGIN */
+
+.login{
+    text-align: center;
+    position: absolute;
+    left: 35%;
+    top: 40%;
+}

@@ -13,13 +13,17 @@
         <h1 class="logo"><a href="/">Gestionale</a></h1>
         <ul>
             <li class="active"><a href="/">Home</a></li>
-            <li><a href="/stampa">Turni</a> </li>
-            <li><a href="/admin">Admin</a></li>
+            <li><a href="/admin">Pannello Admin</a></li>
         </ul>
     </div>
 </header>
-
-<h1>Home</h1>
-
+<div class="login">
+    <h1>Effettua il Login</h1><br />
+    <form name="auth" action="" method="post">{% csrf_token %}
+        Username: <input type="text" name="username"><br />
+        Password: <input type="password" name="password"><br />
+        <input type="submit" value="Login">
+    </form>
+</div>
 </body>
 </html>

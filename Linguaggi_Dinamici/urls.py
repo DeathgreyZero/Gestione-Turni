@@ -19,5 +19,7 @@ from django.contrib import admin
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^$', 'gestione.views.index'),
-    url(r'^stampa/','gestione.views.stampa'),
+    url(r'^stampa/$','gestione.views.stampa'),
+    url(r'^orario_personale/$','gestione.views.orario_personale'),
+    url(r'^logout/$','gestione.views.logout'),
 ]

@@ -26,6 +26,7 @@ def reset():
             pers.martedi_notte = 0
             pers.numero_notti = 0
             pers.save()
+        print 'RESET'
 
 
 cal = calendar.Calendar()
@@ -73,18 +74,7 @@ tupla = None
 tupla2 = None
 mese = str(month) + '/' + str(year)
 
-table = """<table class="tg">
-  <tr>
-    <th class="tg-031e">""" + mese + """</th>
-    <th class="tg-031e">Giorno ACC</th>
-    <th class="tg-031e">Notte ACC</th>
-    <th class="tg-031e">Giorno NEO</th>
-    <th class="tg-031e">Notte NEO</th>
-    <th class="tg-031e">Giorno REPARTO</th>
-    <th class="tg-031e">Notte REPARTO</th>
-  </tr>
-  <tr>
-"""
+
 #Inizializzo la matrice
 mat = numpy.chararray((len(tupla3), 7))
 mat = numpy.chararray(mat.shape, itemsize='40')
@@ -105,7 +95,6 @@ def calcola_turno(reparto,days,n_days):
     #print days
 
     for count in xrange(1,len(persone)+1):
-
         p = Persona.objects.get(pk = persone[count-1].matricola)
         if p.disponibile == 0:
             continue
@@ -196,8 +185,20 @@ def calcola_turno(reparto,days,n_days):
     return nome
 
 
-counter = 1
 
+counter = 1
+table = """<table class="tg">
+  <tr>
+    <th class="tg-031e">""" + mese + """</th>
+    <th class="tg-031e">Giorno ACC</th>
+    <th class="tg-031e">Notte ACC</th>
+    <th class="tg-031e">Giorno NEO</th>
+    <th class="tg-031e">Notte NEO</th>
+    <th class="tg-031e">Giorno REPARTO</th>
+    <th class="tg-031e">Notte REPARTO</th>
+  </tr>
+  <tr>
+"""
 for days in tupla4:
     mat.put(cordinate(counter-1, 0),str(counter)+' '+str(days))
     table = table + '<td class = "tg-031e">'+mat[counter-1][0]+'</td>'
