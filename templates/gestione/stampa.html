@@ -10,7 +10,7 @@
 
 <header>
     <div class="wrapper">
-        <h1 class="logo"><a href="/">Manage Your Job</a></h1>
+         <h1 class="logo"><a href="/"><img src="{% static 'gestione/images/logo.png' %}"></a></h1>
         <ul>
             <li><a href="/">Home</a></li>
             <li class="active"><a href="/stampa">Turni</a></li>
@@ -18,16 +18,16 @@
         </ul>
     </div>
 </header>
-
-
-<div id="tabella_stampa">
+<div id="funzioni">
 <form action="#" method="post">{% csrf_token %}
-    Mese: <input type="number" name="mese">(1-12)
-    Anno: <input type="number" name="anno">(Es. 2015)
-    <input type="submit" value="Genera Turni" name="gen_turni">
-    <input type="submit" value="Salva in XLS" name="salva_xls">
+    <h2>Inserire il periodo da generare</h2>
+    Mese: <input type="number" name="mese"> (1-12)<br />
+    Anno: <input type="number" name="anno"> (Es. 2015)<br />
+    <input id="button1" type="submit" value="Genera Turni" name="gen_turni">
+    <input id="button1" type="submit" value="Salva in XLS" name="salva_xls">
 </form>
-<h1>Stampa</h1>
+</div>
+<div id="tabella_stampa">
     {% autoescape off %}{{ HTML }}{% endautoescape %}
 </table>
 </div>

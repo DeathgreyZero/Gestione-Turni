@@ -43,8 +43,7 @@ p{
 
 /* Header */
 header{
-    height: 110px;
-
+    height: 140px;
     background: #F4F8F9;
 }
 
@@ -60,13 +59,13 @@ header li{
     display: inline-block;
     width: 90px;
     height: 36px;
-    margin: 0 10px 0 0;
+    margin: 0 15px 0 0;
 }
 
 header li a{
     color: #2C6069;
-    display: block;
-    width: 90px;
+    display: inline-block;
+    width: 100px;
     height: 36px;
     text-align: center;
     font-weight: bold ;
@@ -84,23 +83,49 @@ header li a{
 #tabella_stampa{
     text-align: center;
     position: absolute;
-    left: 20%;
+    float: left;
+    left: 10%;
 }
 
 
 /* LOGIN */
 
 .login{
+    border: 2px solid #2C6069;
+    width: 250px;
+    padding: 10px;
+    height: 150px;
     text-align: center;
     position: absolute;
-    left: 35%;
-    top: 40%;
+    left: 40%;
+    top: 25%;
 }
 
 /* LOGO */
 .logo{
-    text-align: center;
+    transform: scale(0.5,0.5);
     position: absolute;
-    top: 10%;
-    left: 30%;
+    top: -8%;
+    left: 5%;
+}
+
+/* FUNZIONI */
+#funzioni{
+    line-height: 25px;
+    right: 15%;
+    top: 20%;
+    text-align: left;
+    position: absolute;
+    float: right;
+}
+/* SUBMIT */
+
+input#button1{
+    cursor:pointer; /*forces the cursor to change to a hand when the button is hovered*/
+    padding:5px 25px; /*add some padding to the inside of the button*/
+    background: #CDE0E4; /*the colour of the button*/
+    border:1px solid #2C6069;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
 }
