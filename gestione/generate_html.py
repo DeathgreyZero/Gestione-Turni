@@ -1,6 +1,6 @@
 import calendar
 import datetime
-from array_persona import *
+from .models import Persona
 import numpy
 import xlwt
 
@@ -24,7 +24,7 @@ def get_liste(stringa,lista):
             j = i+1
 
 
-def reset():
+def reset(persone):
     for count in xrange(1,len(persone)+1):
         pers = Persona.objects.get(pk = persone[count-1].matricola)
         pers.turni_effettuati = 0
@@ -69,16 +69,14 @@ def crea_liste(month, year):
     return [tupla4, mat, mese]
 
 
-def calcola_turno(reparto, days, n_days, lista_notti_effettuate, festivi):
+def calcola_turno(reparto, days, n_days, lista_notti_effettuate, festivi, persone):
     nome = ''
 
     for count in xrange(1,len(persone)+1):
         p = Persona.objects.get(pk = persone[count-1].matricola)
         if p.disponibile == 0:
             continue
-        #print 'Seleziono -> : '+p.nome
         get_liste(p.nomi_notti_effettuate,lista_notti_effettuate)
-        #print ">>>>>>>>>>>>> FUNZIONE GET_NOTTI<<<<<<<<<<<"
         #print lista_notti_effettuate
         if ((((((((days == 'Sabato' or days == 'Domenica' or (n_days in festivi ))) or reparto%2 == 0) and p.indice_preso == 0) and p.indice_notte <= 1)and p.maternita == 0)) and ((p.turni_effettuati < 4 and (p.anno_freq > 3 or p.max_turni_mese_prec == 1))or(p.turni_effettuati<5 and (p.anno_freq < 4 and p.max_turni_mese_prec == 0)))) and (str(n_days) not in p.desiderati_x):
             if reparto == 1 and (p.anno_freq <= 2 and str(n_days) not in p.desiderati_g):
@@ -164,15 +162,13 @@ def calcola_turno(reparto, days, n_days, lista_notti_effettuate, festivi):
 
 
 
-def gen_turno(table, tupla4, mat, lista_notti_effettuate, festivi, month):
+def gen_turno(table, tupla4, mat, lista_notti_effettuate, festivi, month, persone):
     counter = 1
     for days in tupla4:
         mat.put(cordinate(counter-1, 0),str(counter)+' '+str(days))
         table = table + '<td class = "tg-031e">'+mat[counter-1][0]+'</td>'
-        #print '>>>>>>>>>>>>>>GIORNO '+str(counter)+'<<<<<<<<<<<<<<<<<<<<<'
         for reparto in range(1,7):
-            #print '>>>>>>>>>>>>> REPARTO: '+str(reparto)+'<<<<<<<<<<<<<<<<'
-            turno = calcola_turno(reparto,days,counter, lista_notti_effettuate, festivi)
+            turno = calcola_turno(reparto,days,counter, lista_notti_effettuate, festivi, persone)
             table = table+'<td class="tg-vn4c">' + turno + '</td>'
             mat.put(cordinate(counter-1,reparto),turno)
         table = table + "</tr>"

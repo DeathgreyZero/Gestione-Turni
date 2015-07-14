@@ -4,10 +4,12 @@ from django.contrib.auth import authenticate,login
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib import auth
 from django.http import HttpResponse
+from array_persona import database_connection
 import generate_html
 
 mese_anno = 0
 mese = 0
+mat = None
 
 def index(request):
     username = request.POST.get('username')
@@ -39,6 +41,8 @@ def stampa(request):
     global mese_anno
 
     if(request.POST.get('gen_turni')):
+
+        persone = database_connection()
 
         mese = request.POST.get('mese')
         anno = request.POST.get('anno')
@@ -79,11 +83,14 @@ def stampa(request):
           <tr>
         """
 
-        generate_html.reset()
-        HTML = generate_html.gen_turno(table, tupla4, mat, lista_notti_effettuate, festivi, mese)
+        generate_html.reset(persone)
+        HTML = generate_html.gen_turno(table, tupla4, mat, lista_notti_effettuate, festivi, mese, persone)
 
-        return render(request,"gestione/stampa.html",{"HTML":HTML})
+        return render(request,"gestione/stampa.html", {"HTML":HTML})
     if(request.POST.get('salva_xls')):
+
+        global mat
+
         response = HttpResponse(content_type='application/vnd.ms-excel')
         response['Content-Disposition'] = 'attachment; filename=turni.xls'
         generate_html.save_xls(response, mese_anno, mat)
