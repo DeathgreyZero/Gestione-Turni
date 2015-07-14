@@ -3,7 +3,7 @@ from django.db import models
 class Persona(models.Model):
     nome = models.CharField(max_length=20)
     cognome = models.CharField(max_length=20)
-    matricola = models.CharField(max_length=10, primary_key=True,verbose_name='Codice Fiscale')
+    matricola = models.CharField(max_length=16, primary_key=True,verbose_name='Codice Fiscale')
     anno_freq = models.IntegerField(default=1,help_text='Anno di Specializzazione (valori consentiti da 1 a 5)')
     maternita = models.IntegerField(default=0,help_text='1 per indicare la maternita\' 0 altrimenti')
     numero_notti = models.IntegerField(default=0)

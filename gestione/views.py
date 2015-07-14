@@ -1,11 +1,10 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render,HttpResponseRedirect
-from django.contrib.auth import logout,authenticate,login
+from django.contrib.auth import authenticate,login
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib import auth
 from django.http import HttpResponse
 import generate_html
-import calendar
 
 mese_anno = 0
 mese = 0
@@ -40,6 +39,7 @@ def stampa(request):
     global mese_anno
 
     if(request.POST.get('gen_turni')):
+
         mese = request.POST.get('mese')
         anno = request.POST.get('anno')
 
