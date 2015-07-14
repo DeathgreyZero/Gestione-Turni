@@ -17,6 +17,11 @@ def get_liste(stringa,lista):
             lista.append(stringa[j:i])
             j = i+1
 
+def change_data(m,a):
+    global month
+    global year
+    month = m
+    year = a
 
 def reset():
         for count in xrange(1,len(persone)+1):
@@ -56,6 +61,8 @@ day = ['Lunedi', 'Martedi', 'Mercoledi', 'Giovedi', 'Venerdi', 'Sabato', 'Domeni
 cont = 0
 tupla = []
 tupla2 = []
+mese = str(month) + '/' + str(year)
+
 
 for i in calendario:
     tupla.append(i)
@@ -72,7 +79,7 @@ for i in xrange(0, len(tupla)):
 
 tupla = None
 tupla2 = None
-mese = str(month) + '/' + str(year)
+
 
 
 #Inizializzo la matrice
@@ -110,7 +117,7 @@ def calcola_turno(reparto,days,n_days):
                 p.indice_preso = 1
                 p.save()
                 #print 'Idoneo, prendo '+p.nome
-                return p.nome
+                return p.matricola
             if (reparto == 2 and (p.indice_notte == 0 and str(n_days) not in p.desiderati_n)) and ((days != 'Martedi' and days not in lista_notti_effettuate) or (days == 'Martedi' and p.martedi_notte < 2)):
                 #print 'indice notti : '+str(p.indice_notte)
                 if days == 'Martedi':
@@ -125,7 +132,7 @@ def calcola_turno(reparto,days,n_days):
                 p.indice_notte = 3
                 p.save()
                 #print 'Idoneo, prendo '+p.nome
-                return p.nome
+                return p.matricola
             if reparto == 3 and (p.anno_freq >=3 and str(n_days) not in p.desiderati_g):
                 p.turni_effettuati+=1
                 if p.turni_effettuati == 5:
@@ -133,7 +140,7 @@ def calcola_turno(reparto,days,n_days):
                 p.indice_preso = 1
                 p.save()
                 #print 'Idoneo, prendo '+p.nome
-                return p.nome
+                return p.matricola
             if ((reparto == 4 and (p.abilitazione_neo == 1 and str(n_days) not in p.desiderati_n)) and p.indice_notte == 0) and ((days != 'Martedi' and days not in lista_notti_effettuate) or (days == 'Martedi' and p.martedi_notte < 2)):
                 #print 'indice notti : '+str(p.indice_notte)
                 if days == 'Martedi':
@@ -148,7 +155,7 @@ def calcola_turno(reparto,days,n_days):
                 p.indice_notte = 3
                 p.save()
                 #print 'Idoneo, prendo '+p.nome
-                return p.nome
+                return p.matricola
             if reparto == 5 and str(n_days) not in p.desiderati_g:
                 p.turni_effettuati+=1
                 if p.turni_effettuati == 5:
@@ -156,7 +163,7 @@ def calcola_turno(reparto,days,n_days):
                 p.indice_preso = 1
                 p.save()
                 #print 'Idoneo, prendo '+p.nome
-                return p.nome
+                return p.matricola
             if ((reparto == 6 and (p.anno_freq >= 4 and str(n_days) not in p.desiderati_x)) and p.indice_notte == 0) and ((days != 'Martedi' and days not in lista_notti_effettuate) or (days == 'Martedi' and p.martedi_notte < 2)):
                 #print 'indice notti : '+str(p.indice_notte)
                 if days == 'Martedi':
@@ -171,7 +178,7 @@ def calcola_turno(reparto,days,n_days):
                 p.indice_notte = 3
                 p.save()
                 #print 'Idoneo, prendo '+p.nome
-                return p.nome
+                return p.matricola
             #print p.nome+' NON E IDONEO'
         #print 'NESSUNO E IDONEO'
         if p.indice_preso > 0 and reparto == 1:
@@ -213,6 +220,7 @@ def gen_turno():
             mat.put(cordinate(counter-1,reparto),turno)
         table = table + "</tr>"
         counter += 1
+    numpy.save(str(month),mat)
 
 #print mat
 
@@ -233,3 +241,29 @@ def save_xls(response):
             sheet.write(i+1, j, mat[i, j])
 
     return wbook.save(response)
+
+
+table_personale = """<table class="tg">
+  <tr>
+    <th class="tg-031e">""" + mese + """</th>
+    <th class="tg-031e">Giorno ACC</th>
+    <th class="tg-031e">Notte ACC</th>
+    <th class="tg-031e">Giorno NEO</th>
+    <th class="tg-031e">Notte NEO</th>
+    <th class="tg-031e">Giorno REPARTO</th>
+    <th class="tg-031e">Notte REPARTO</th>
+  </tr>
+  <tr>
+"""
+
+def load_mat(user):
+    global table_personale
+    mat = numpy.load('7.npy')
+    for i in range(0, mat.shape[0]):
+            table_personale = table_personale + '<td class = "tg-031e">'+mat[i][0]+'</td>'
+            for j in range(1, mat.shape[1]):
+                if str(user).upper() == str(mat[i,j]).upper():
+                    table_personale = table_personale+'<td class="tg-vn4c">'+str(user).upper()+'</td>'
+                else:
+                    table_personale = table_personale+'<td class="tg-vn4c">'+' '+'</td>'
+            table_personale = table_personale + "</tr>"
