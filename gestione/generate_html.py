@@ -4,10 +4,16 @@ from array_persona import *
 import numpy
 import xlwt
 
+#1.Giorno Accettazione
+#2.Notte Accettazione
+#3.Giorno Neonatologia
+#4.Notte Neonatologia
+#5.Giorno Reparto
+#6.Notte Reparto
+
 def cordinate(row, col):
     return (row + col) + (row * 6)
 
-lista_notti_effettuate = []
 
 #funzione che ritorna le liste
 def get_liste(stringa,lista):
@@ -17,89 +23,54 @@ def get_liste(stringa,lista):
             lista.append(stringa[j:i])
             j = i+1
 
-def change_data(m,a):
-    global month
-    global year
-    month = m
-    year = a
 
 def reset():
-        for count in xrange(1,len(persone)+1):
-            pers = Persona.objects.get(pk = persone[count-1].matricola)
-            pers.turni_effettuati = 0
-            pers.nomi_notti_effettuate = ' '
-            pers.martedi_notte = 0
-            pers.numero_notti = 0
-            pers.save()
-        print 'RESET'
-
-
-cal = calendar.Calendar()
-year  = datetime.date.today().year
-month = datetime.date.today().month
-
-festivi = []
-if month == 1:
-    festivi = [1, 6]
-if month == 2:
-    festivi = [17]
-if month == 4:
-    festivi = [25]
-if month == 5:
-    festivi = [1]
-if month == 6:
-    festivi = [2]
-if month == 8:
-    festivi = [15]
-if month == 11:
-    festivi = [1]
-if month == 12:
-    festivi = [8, 25, 26]
-
-calendario = cal.itermonthdays(year, month)
-day = ['Lunedi', 'Martedi', 'Mercoledi', 'Giovedi', 'Venerdi', 'Sabato', 'Domenica']
-cont = 0
-tupla = []
-tupla2 = []
-mese = str(month) + '/' + str(year)
-
-
-for i in calendario:
-    tupla.append(i)
-    tupla2.append(day[cont % len(day)])
-    cont += 1
-
-tupla3 = []
-tupla4 = []
-
-for i in xrange(0, len(tupla)):
-    if tupla[i] != 0:
-        tupla3.append(tupla[i])
-        tupla4.append(tupla2[i])
-
-tupla = None
-tupla2 = None
+    for count in xrange(1,len(persone)+1):
+        pers = Persona.objects.get(pk = persone[count-1].matricola)
+        pers.turni_effettuati = 0
+        pers.nomi_notti_effettuate = ' '
+        pers.martedi_notte = 0
+        pers.numero_notti = 0
+        pers.save()
+    print 'RESET'
 
 
 
-#Inizializzo la matrice
-mat = numpy.chararray((len(tupla3), 7))
-mat = numpy.chararray(mat.shape, itemsize='40')
-mat[:] = ' '
+def crea_liste(month, year):
+    calendario = calendar.Calendar().itermonthdays(year, month)
+    day = ['Lunedi', 'Martedi', 'Mercoledi', 'Giovedi', 'Venerdi', 'Sabato', 'Domenica']
+
+    cont = 0
+    tupla  = []
+    tupla2 = []
+    mese = str(month) + '/' + str(year)
+
+    for i in calendario:
+        tupla.append(i)
+        tupla2.append(day[cont % len(day)])
+        cont += 1
+
+    tupla3 = []
+    tupla4 = []
+
+    for i in xrange(0, len(tupla)):
+        if tupla[i] != 0:
+            tupla3.append(tupla[i])
+            tupla4.append(tupla2[i])
+
+    tupla  = None
+    tupla2 = None
+
+    #Inizializzo la matrice
+    mat = numpy.chararray((len(tupla3), 7))
+    mat = numpy.chararray(mat.shape, itemsize='40')
+    mat[:] = ' '
+
+    return [tupla4, mat, mese]
 
 
-
-#1.Giorno Accettazione
-#2.Notte Accettazione
-#3.Giorno Neonatologia
-#4.Notte Neonatologia
-#5.Giorno Reparto
-#6.Notte Reparto
-
-
-def calcola_turno(reparto,days,n_days):
+def calcola_turno(reparto, days, n_days, lista_notti_effettuate, festivi):
     nome = ''
-    #print days
 
     for count in xrange(1,len(persone)+1):
         p = Persona.objects.get(pk = persone[count-1].matricola)
@@ -193,38 +164,26 @@ def calcola_turno(reparto,days,n_days):
 
 
 
-
-table = """<table class="tg">
-  <tr>
-    <th class="tg-031e">""" + mese + """</th>
-    <th class="tg-031e">Giorno ACC</th>
-    <th class="tg-031e">Notte ACC</th>
-    <th class="tg-031e">Giorno NEO</th>
-    <th class="tg-031e">Notte NEO</th>
-    <th class="tg-031e">Giorno REPARTO</th>
-    <th class="tg-031e">Notte REPARTO</th>
-  </tr>
-  <tr>
-"""
-def gen_turno():
+def gen_turno(table, tupla4, mat, lista_notti_effettuate, festivi, month):
     counter = 1
-    global table
     for days in tupla4:
         mat.put(cordinate(counter-1, 0),str(counter)+' '+str(days))
         table = table + '<td class = "tg-031e">'+mat[counter-1][0]+'</td>'
         #print '>>>>>>>>>>>>>>GIORNO '+str(counter)+'<<<<<<<<<<<<<<<<<<<<<'
         for reparto in range(1,7):
             #print '>>>>>>>>>>>>> REPARTO: '+str(reparto)+'<<<<<<<<<<<<<<<<'
-            turno = calcola_turno(reparto,days,counter)
+            turno = calcola_turno(reparto,days,counter, lista_notti_effettuate, festivi)
             table = table+'<td class="tg-vn4c">' + turno + '</td>'
             mat.put(cordinate(counter-1,reparto),turno)
         table = table + "</tr>"
         counter += 1
-    numpy.save(str(month),mat)
+    numpy.save(str(month), mat)
 
-#print mat
+    return table
 
-def save_xls(response):
+
+
+def save_xls(response, mese, mat):
     wbook = xlwt.Workbook()
     sheet = wbook.add_sheet('my_sheet')
 
@@ -243,27 +202,15 @@ def save_xls(response):
     return wbook.save(response)
 
 
-table_personale = """<table class="tg">
-  <tr>
-    <th class="tg-031e">""" + mese + """</th>
-    <th class="tg-031e">Giorno ACC</th>
-    <th class="tg-031e">Notte ACC</th>
-    <th class="tg-031e">Giorno NEO</th>
-    <th class="tg-031e">Notte NEO</th>
-    <th class="tg-031e">Giorno REPARTO</th>
-    <th class="tg-031e">Notte REPARTO</th>
-  </tr>
-  <tr>
-"""
 
-def load_mat(user):
-    global table_personale
-    mat = numpy.load('7.npy')
+def load_mat(user, table_personale, mese):
+    mat = numpy.load(str(mese)+'.npy')
     for i in range(0, mat.shape[0]):
-            table_personale = table_personale + '<td class = "tg-031e">'+mat[i][0]+'</td>'
-            for j in range(1, mat.shape[1]):
-                if str(user).upper() == str(mat[i,j]).upper():
-                    table_personale = table_personale+'<td class="tg-vn4c">'+str(user).upper()+'</td>'
-                else:
-                    table_personale = table_personale+'<td class="tg-vn4c">'+' '+'</td>'
-            table_personale = table_personale + "</tr>"
+        table_personale = table_personale + '<td class = "tg-031e">'+mat[i][0]+'</td>'
+        for j in range(1, mat.shape[1]):
+            if str(user).upper() == str(mat[i,j]).upper():
+                table_personale = table_personale+'<td class="tg-vn4c">'+str(user).upper()+'</td>'
+            else:
+                table_personale = table_personale+'<td class="tg-vn4c">'+' '+'</td>'
+        table_personale = table_personale + "</tr>"
+    return table_personale
