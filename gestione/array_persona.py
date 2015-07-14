@@ -16,6 +16,4 @@ for course in a.fetchall():
                            desiderati_x = "{0}".format(course[13]),desiderati_g = "{0}".format(course[14]), desiderati_n = "{0}".format(course[15]),
                            disponibile = "{0}".format(course[16])))
 
-print persone[0].nome
-
 c.close()

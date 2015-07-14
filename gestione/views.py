@@ -17,7 +17,7 @@ def index(request):
     if user is not None:
         if user.is_superuser:
             print 'Ola Capo'
-            login(request,user)
+            login(request, user)
             return HttpResponseRedirect('/stampa')
         if user.is_active:
             login(request, user)
@@ -31,11 +31,14 @@ def index(request):
 
 @user_passes_test(lambda u: u.is_superuser)
 def stampa(request):
+
     festivi = []
     lista_notti_effettuate = []
+
     global mat
-    global mese_anno
     global mese
+    global mese_anno
+
     if(request.POST.get('gen_turni')):
         mese = request.POST.get('mese')
         anno = request.POST.get('anno')
@@ -105,8 +108,10 @@ def stampa(request):
 
 @login_required
 def orario_personale(request):
+
     global mese
     global mese_anno
+
     table_personale = """<table class="tg">
         <tr>
         <th class="tg-031e">""" + str(mese_anno) + """</th>
