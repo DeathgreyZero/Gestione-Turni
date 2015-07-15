@@ -166,10 +166,10 @@ def gen_turno(table, tupla4, mat, lista_notti_effettuate, festivi, month, person
     counter = 1
     for days in tupla4:
         mat.put(cordinate(counter-1, 0),str(counter)+' '+str(days))
-        table = table + '<td class = "tg-031e">'+mat[counter-1][0]+'</td>'
+        table = table + '<td class = "tg-'+str(counter%2)+'">'+mat[counter-1][0]+'</td>'
         for reparto in range(1,7):
             turno = calcola_turno(reparto,days,counter, lista_notti_effettuate, festivi, persone)
-            table = table+'<td class="tg-vn4c">' + turno + '</td>'
+            table = table+'<td class="tg-'+str(counter%2)+'">' + turno + '</td>'
             mat.put(cordinate(counter-1,reparto),turno)
         table = table + "</tr>"
         counter += 1

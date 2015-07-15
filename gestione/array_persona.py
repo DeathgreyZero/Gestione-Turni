@@ -19,5 +19,4 @@ def database_connection():
         )
 
     c.close()
-
     return persone
