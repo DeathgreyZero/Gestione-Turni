@@ -17,7 +17,7 @@ def index(request):
     user = authenticate(username=username, password=password)
     if user is not None:
         if user.is_superuser:
-            print 'Ola Capo'
+            #print 'Superuser'
             login(request, user)
             return HttpResponseRedirect('/stampa')
         if user.is_active:
@@ -34,7 +34,6 @@ def index(request):
 def stampa(request):
 
     festivi = []
-    lista_notti_effettuate = []
 
     global mat
     global mese
@@ -84,7 +83,7 @@ def stampa(request):
         """
 
         generate_html.reset(persone)
-        HTML = generate_html.gen_turno(table, tupla4, mat, lista_notti_effettuate, festivi, mese, persone)
+        HTML = generate_html.gen_turno(table, tupla4, mat, festivi, mese, persone)
 
         return render(request,"gestione/stampa.html", {"HTML":HTML})
     if(request.POST.get('salva_xls')):

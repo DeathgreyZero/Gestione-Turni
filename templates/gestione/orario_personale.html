@@ -10,7 +10,7 @@
 
 <header>
     <div class="wrapper">
-        <h1 class="logo"><a href="/">Manage Your Job</a></h1>
+        <h1 class="logo"><a href="/"><img src="{% static 'gestione/images/logo.png' %}"></a></h1>
         <ul>
             <li><a href="/">Home</a></li>
             <li class="active"><a href="/orario_personale">Turni</a></li>
@@ -20,7 +20,7 @@
 </header>
 
 
-<div id="tabella_stampa">
+<div id="tabella_stampa_pers">
 <h1>Turni {{ request.user }}</h1>
     {% autoescape off %}{{ Tab }}{% endautoescape %}
 </table>

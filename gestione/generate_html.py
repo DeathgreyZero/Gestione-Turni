@@ -15,15 +15,6 @@ def cordinate(row, col):
     return (row + col) + (row * 6)
 
 
-#funzione che ritorna le liste
-def get_liste(stringa,lista):
-    j = 0
-    for i in range(0,len(stringa)):
-        if stringa[i] == ',':
-            lista.append(stringa[j:i])
-            j = i+1
-
-
 def reset(persone):
     for count in xrange(1,len(persone)+1):
         pers = Persona.objects.get(pk = persone[count-1].matricola)
@@ -32,7 +23,7 @@ def reset(persone):
         pers.martedi_notte = 0
         pers.numero_notti = 0
         pers.save()
-    print 'RESET'
+    #print 'RESET'
 
 
 
@@ -69,17 +60,17 @@ def crea_liste(month, year):
     return [tupla4, mat, mese]
 
 
-def calcola_turno(reparto, days, n_days, lista_notti_effettuate, festivi, persone):
+def calcola_turno(reparto, days, n_days, festivi, persone):
     nome = ''
 
     for count in xrange(1,len(persone)+1):
         p = Persona.objects.get(pk = persone[count-1].matricola)
         if p.disponibile == 0:
             continue
-        get_liste(p.nomi_notti_effettuate,lista_notti_effettuate)
+        #get_liste(p.nomi_notti_effettuate,lista_notti_effettuate)
         #print lista_notti_effettuate
-        if ((((((((days == 'Sabato' or days == 'Domenica' or (n_days in festivi ))) or reparto%2 == 0) and p.indice_preso == 0) and p.indice_notte <= 1)and p.maternita == 0)) and ((p.turni_effettuati < 4 and (p.anno_freq > 3 or p.max_turni_mese_prec == 1))or(p.turni_effettuati<5 and (p.anno_freq < 4 and p.max_turni_mese_prec == 0)))) and (str(n_days) not in p.desiderati_x):
-            if reparto == 1 and (p.anno_freq <= 2 and str(n_days) not in p.desiderati_g):
+        if ((((((((days == 'Sabato' or days == 'Domenica' or (n_days in festivi ))) or reparto%2 == 0) and (p.indice_preso == 0)) and (p.indice_notte <= 1))and (p.maternita == 0)))) and (((p.turni_effettuati < 4) and (p.anno_freq > 3 or p.max_turni_mese_prec == 1)) or ((p.turni_effettuati<5) and (p.anno_freq < 4 and p.max_turni_mese_prec == 0))) and (str(n_days) not in p.desiderati_x):
+            if reparto == 1 and (p.anno_freq <= 2 and (str(n_days) not in p.desiderati_g)):
                 p.turni_effettuati +=1
                 if p.turni_effettuati == 5:
                     p.max_turni_mese_prec = 1
@@ -87,7 +78,7 @@ def calcola_turno(reparto, days, n_days, lista_notti_effettuate, festivi, person
                 p.save()
                 #print 'Idoneo, prendo '+p.nome
                 return p.matricola
-            if (reparto == 2 and (p.indice_notte == 0 and str(n_days) not in p.desiderati_n)) and ((days != 'Martedi' and days not in lista_notti_effettuate) or (days == 'Martedi' and p.martedi_notte < 2)):
+            if (reparto == 2 and (p.indice_notte == 0 and str(n_days) not in p.desiderati_n)) and ((days != 'Martedi' and days not in p.nomi_notti_effettuate) or (days == 'Martedi' and p.martedi_notte < 2)):
                 #print 'indice notti : '+str(p.indice_notte)
                 if days == 'Martedi':
                     p.martedi_notte +=1
@@ -110,7 +101,7 @@ def calcola_turno(reparto, days, n_days, lista_notti_effettuate, festivi, person
                 p.save()
                 #print 'Idoneo, prendo '+p.nome
                 return p.matricola
-            if ((reparto == 4 and (p.abilitazione_neo == 1 and str(n_days) not in p.desiderati_n)) and p.indice_notte == 0) and ((days != 'Martedi' and days not in lista_notti_effettuate) or (days == 'Martedi' and p.martedi_notte < 2)):
+            if ((reparto == 4 and (p.abilitazione_neo == 1 and str(n_days) not in p.desiderati_n)) and p.indice_notte == 0) and ((days != 'Martedi' and days not in p.nomi_notti_effettuate) or (days == 'Martedi' and p.martedi_notte < 2)):
                 #print 'indice notti : '+str(p.indice_notte)
                 if days == 'Martedi':
                     p.martedi_notte +=1
@@ -133,7 +124,7 @@ def calcola_turno(reparto, days, n_days, lista_notti_effettuate, festivi, person
                 p.save()
                 #print 'Idoneo, prendo '+p.nome
                 return p.matricola
-            if ((reparto == 6 and (p.anno_freq >= 4 and str(n_days) not in p.desiderati_x)) and p.indice_notte == 0) and ((days != 'Martedi' and days not in lista_notti_effettuate) or (days == 'Martedi' and p.martedi_notte < 2)):
+            if ((reparto == 6 and (p.anno_freq >= 4 and str(n_days) not in p.desiderati_x)) and p.indice_notte == 0) and ((days != 'Martedi' and days not in p.nomi_notti_effettuate) or (days == 'Martedi' and p.martedi_notte < 2)):
                 #print 'indice notti : '+str(p.indice_notte)
                 if days == 'Martedi':
                     p.martedi_notte +=1
@@ -162,13 +153,13 @@ def calcola_turno(reparto, days, n_days, lista_notti_effettuate, festivi, person
 
 
 
-def gen_turno(table, tupla4, mat, lista_notti_effettuate, festivi, month, persone):
+def gen_turno(table, tupla4, mat, festivi, month, persone):
     counter = 1
     for days in tupla4:
         mat.put(cordinate(counter-1, 0),str(counter)+' '+str(days))
         table = table + '<td class = "tg-'+str(counter%2)+'">'+mat[counter-1][0]+'</td>'
         for reparto in range(1,7):
-            turno = calcola_turno(reparto,days,counter, lista_notti_effettuate, festivi, persone)
+            turno = calcola_turno(reparto,days,counter, festivi, persone)
             table = table+'<td class="tg-'+str(counter%2)+'">' + turno + '</td>'
             mat.put(cordinate(counter-1,reparto),turno)
         table = table + "</tr>"
