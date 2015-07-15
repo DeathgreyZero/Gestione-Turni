@@ -130,7 +130,10 @@ def orario_personale(request):
         </tr>
         <tr>
     """
-    Tab = generate_html.load_mat(user=request.user, table_personale=table_personale, mese=mese)
+    try:
+        Tab = generate_html.load_mat(user=request.user, table_personale=table_personale, mese=mese)
+    except IOError:
+        Tab = '<h2>Turni non ancora Calcolati</h2>'
     return render(request,'gestione/orario_personale.html',{"Tab":Tab})
 
 @login_required
