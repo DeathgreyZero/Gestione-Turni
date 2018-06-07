@@ -1,4 +1,4 @@
-# Linguaggi_Dinamici
+# Gestione Turni
 Istruzioni per l’installazione:
 
 Il software necessita dell’istallazione delle seguenti librerie esterne:
